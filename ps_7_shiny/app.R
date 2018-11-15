@@ -61,7 +61,8 @@ ui <- fluidPage(
         selectInput("choice", "Select a Type of Voter",
                     choices = c("Race", "Education Level", "Landline versus Cell Phone", 
                                 "Predictions on Democrats Taking the House", "Margin of Women")),
-        checkboxInput("on_off", label = "Show Congressional District Labels", value = FALSE)
+        checkboxInput("on_off", label = "Show Congressional District Labels", value = FALSE),
+        checkboxInput("line", label = "Show Line of Best Fit", value = FALSE)
 
       ),
       
@@ -78,7 +79,7 @@ server <- function(input, output) {
    output$distPlot <- renderPlot({
      
      if (input$choice == "Race" & input$on_off == FALSE) {
-       race %>%
+       raceplot <- race %>%
          ggplot(aes(x = non_white, y = dem_margin, color = dem_margin)) +
          geom_point() +
          scale_color_gradient(low= "red", high= "blue", name = "Predicted Dem. Adv.") +
@@ -87,10 +88,16 @@ server <- function(input, output) {
          ggtitle("Percentage of Non-White Votes vs. Predicted Democratic Advantage by House District",
                  subtitle = "There was a weak positive correlation between the percentage of nonwhite voters per district \n and the Predicted Democratic Advantage with a few outliers.") +
          theme(plot.title = element_text(lineheight=.8, face="bold"))
+       print(raceplot)
+       if (input$line == TRUE) {
+         withline<- raceplot + geom_smooth(method = lm)
+         print(withline)
+       }
+         
      }
      
      else if (input$choice == "Race" & input$on_off == TRUE) {
-       race %>%
+       raceplot <- race %>%
          ggplot(aes(x = non_white, y = dem_margin, color = dem_margin)) +
          geom_point() +
          geom_label_repel(aes(label = nicename), size = 3, force = 1) +
@@ -100,10 +107,17 @@ server <- function(input, output) {
          ggtitle("Percentage of Non-White Votes vs. Predicted Democratic Advantage by House District",
                  subtitle = "There was a weak positive correlation between the percentage of nonwhite voters per district \n and the Predicted Democratic Advantage with a few outliers.") +
          theme(plot.title = element_text(lineheight=.8, face="bold"))
+        print(raceplot)
+       
+       if (input$line == TRUE) {
+         withline<- raceplot + geom_smooth(method = lm)
+         print(withline)
+       }
+  
      }
      
      else if (input$choice == "Education Level" & input$on_off == FALSE) {
-       education %>%
+       eduplot <- education %>%
          ggplot(aes(x = higher_ed, y = dem_margin, color = dem_margin)) +
          geom_point() +
          scale_color_gradient(low= "red", high= "blue", name = "Predicted Dem. Adv.") +
@@ -112,10 +126,17 @@ server <- function(input, output) {
          ggtitle("Percentage of Poll Respondants with Greater than a Bachelor's Degree vs.\n Predicted Democratic Advantage by House District",
                  subtitle = "There was a very weak positive correlation between the percentage of poll respondents with a \n degree higher than a Bachelor’s per district and the Predicted Democratic Advantage.") +
          theme(plot.title = element_text(lineheight=.8, face="bold"))
+       
+       print(eduplot)
+       
+       if (input$line == TRUE) {
+         withline <- eduplot + geom_smooth(method = lm)
+         print(withline)
+       }
      }
      
      else if (input$choice == "Education Level" & input$on_off == TRUE) {
-       education %>%
+       eduplot <- education %>%
          ggplot(aes(x = higher_ed, y = dem_margin, color = dem_margin)) +
          geom_point() +
          geom_label_repel(aes(label = nicename), size = 3, force = 1) +
@@ -124,10 +145,16 @@ server <- function(input, output) {
          ylab("Predicted Democratic Advantage") + 
          ggtitle("Percentage of Poll Respondants with Greater than a Bachelor's Degree vs. \n Predicted Democratic Advantage by House District",
                  subtitle = "There was a very weak positive correlation between the percentage of poll respondents with a \n degree higher than a Bachelor’s per district and the Predicted Democratic Advantage.")
-     }
+        print(eduplot)
+       if (input$line == TRUE) {
+         withline <- eduplot + geom_smooth(method = lm)
+         print(withline)
+       }
+       
+       }
      
      else if (input$choice == "Landline versus Cell Phone" & input$on_off == FALSE) {
-       landline %>%
+       phoneplot <- landline %>%
          ggplot(aes(x = landline, y = dem_margin, color = dem_margin)) +
          geom_point() +
          scale_color_gradient(low= "red", high= "blue", name = "Predicted Dem. Adv.") +
@@ -136,10 +163,16 @@ server <- function(input, output) {
          ggtitle("Percentage of Poll Respondants Who Answered a Landline vs. \n Predicted Democratic Advantage by House District",
                  subtitle = "There was no correlation between the percentage of poll respondents with who answered on a landline \n phone per district and the Predicted Democratic Advantage.") +
          theme(plot.title = element_text(lineheight=.8, face="bold"))
+       print(phoneplot)
+       
+       if (input$line == TRUE) {
+         withline <- phoneplot + geom_smooth(method = lm)
+         print(withline)
+       }
      }
      
      else if (input$choice == "Landline versus Cell Phone" & input$on_off == TRUE) {
-       landline %>%
+       phoneplot<- landline %>%
          ggplot(aes(x = landline, y = dem_margin, color = dem_margin)) +
          geom_point() +
          geom_label_repel(aes(label = nicename), size = 3, force = 1) +
@@ -148,10 +181,17 @@ server <- function(input, output) {
          ylab("Predicted Democratic Advantage") + 
          ggtitle("Percentage of Poll Respondants Who Answered a Landline vs. Predicted Democratic Advantage by House District",
                  subtitle = "There was no correlation between the percentage of poll respondents with who answered on a landline \n phone per district and the Predicted Democratic Advantage.")
+     print(phoneplot)
+     
+     if (input$line == TRUE) {
+       withline <- phoneplot + geom_smooth(method = lm)
+       print(withline)
      }
+       
+       }
      
      else if (input$choice == "Predictions on Democrats Taking the House" & input$on_off == FALSE) {
-       demtakehouse %>%
+       demplot<- demtakehouse %>%
          ggplot(aes(x = genballot, y = dem_margin, color = dem_margin)) +
          geom_point() +
          scale_color_gradient(low= "red", high= "blue", name = "Predicted Dem. Adv.") +
@@ -160,10 +200,16 @@ server <- function(input, output) {
          ggtitle("Percentage of Poll Respondants Who Thought Democrats Would Retake the House vs. \n Predicted Democratic Advantage by House District",
                  subtitle = "There was a positive correlation between the percentage of poll respondents who thought Democrats would \n retake the House per district and the Predicted Democratic Advantage.") +
          theme(plot.title = element_text(lineheight=.8, face="bold"))
+       
+       print(demplot)
+       if (input$line == TRUE) {
+         withline <- demplot + geom_smooth(method = lm)
+         print(withline)
+       }
      }
      
      else if (input$choice == "Predictions on Democrats Taking the House" & input$on_off == TRUE) {
-       demtakehouse %>%
+       demplot <- demtakehouse %>%
          ggplot(aes(x = genballot, y = dem_margin, color = dem_margin)) +
          geom_point() +
          geom_label_repel(aes(label = nicename), size = 3, force = 1) +
@@ -173,10 +219,15 @@ server <- function(input, output) {
          ggtitle("Percentage of Poll Respondants Who Thought Democrats Would Retake the House vs. \n Predicted Democratic Advantage by House District",
                  subtitle = "There was a positive correlation between the percentage of poll respondents who thought Democrats would retake \n the House per district and the Predicted Democratic Advantage.") +
          theme(plot.title = element_text(lineheight=.8, face="bold"))
+       print(demplot)
+       if (input$line == TRUE) {
+         withline <- demplot + geom_smooth(method = lm)
+         print(withline)
+       }
      }
      
      else if (input$choice == "Margin of Women" & input$on_off == FALSE) {
-       women %>%
+       womenplot <- women %>%
          ggplot(aes(x = genballot, y = dem_margin, color = dem_margin)) +
          geom_point() +
          scale_color_gradient(low= "red", high= "blue", name = "Predicted Dem. Adv.") +
@@ -185,10 +236,18 @@ server <- function(input, output) {
          ggtitle("Margin of Women Polled vs. Democratic Advantage",
                  subtitle = "There was a positive correlation between the percentage of female poll respondents per district and the \n Predicted Democratic Advantage.") +
          theme(plot.title = element_text(lineheight=.8, face="bold"))
+       print(womenplot)
+       
+       if (input$line == TRUE) {
+         withline <- womenplot + geom_smooth(method = lm)
+         print(withline)
+       }
+       
+       
      }
      
      else if (input$choice == "Margin of Women" & input$on_off == TRUE) {
-       women %>%
+       womenplot <- women %>%
          ggplot(aes(x = genballot, y = dem_margin, color = dem_margin)) +
          geom_point() +
          geom_label_repel(aes(label = nicename), size = 3, force = 1) +
@@ -198,6 +257,12 @@ server <- function(input, output) {
          ggtitle("Margin of Women Polled vs. Democratic Advantage",
                  subtitle = "There was a positive correlation between the percentage of female poll respondents per district and the \n Predicted Democratic Advantage.") +
          theme(plot.title = element_text(lineheight=.8, face="bold"))
+       print(womenplot)
+       
+       if (input$line == TRUE) {
+         withline <- womenplot + geom_smooth(method = lm)
+         print(withline)
+       }
      }
      
     
