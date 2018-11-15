@@ -47,3 +47,15 @@ genballot <- upshot %>%
   select(state_district, dem_margin, genballot)
 
 write_rds(genballot, "ps_7_shiny/genballot.rds")
+
+women <- upshot %>%
+  filter(senate == FALSE, gov == FALSE, wave == 3) %>%
+  group_by(state_district) %>%
+  count(gender_combined) %>%
+  spread(gender_combined, n) %>%
+  replace(is.na(.), 0) %>%
+  mutate(women = (`Female` - `Male`) / (`Male` + `Female`) * 100) %>%
+  left_join(JS, by = "state_district") %>%
+  select(state_district, dem_margin, women)
+
+write_rds(genballot, "ps_7_shiny/women.rds")
