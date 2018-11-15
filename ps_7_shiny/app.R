@@ -32,49 +32,68 @@ ui <- fluidPage(
 
 # Define server logic required to draw a histogram
 server <- function(input, output) {
-  
-  made_a_choice <- reactive({
-    if (input$choice == "Race") {
-      data <- race %>%
-        ggplot(aes(x = non_white, y = dem_margin, color = dem_margin)) +
-        geom_point() +
-        geom_label_repel(aes(label = state_district), size = 3, force = 1) +
-        scale_color_gradient(low= "red", high= "blue", name = "Predicted Dem. Adv.") +
-        xlab("Percentage of Non-White Voters") +
-        ylab("Predicted Democratic Advantage") + 
-        ggtitle("hhhh",
-                subtitle = "hhhh")
-    }
-    
-    if (input$choice == "Education Level") {
-      data <- education %>%
-        ggplot(aes(x = higher_ed, y = dem_margin, color = dem_margin)) +
-        geom_point() +
-        geom_label_repel(aes(label = state_district), size = 3, force = 1) +
-        scale_color_gradient(low= "red", high= "blue", name = "Predicted Dem. Adv.") +
-        xlab("Percentage of Poll Respondants with Greater than a Bachelor's Degree") +
-        ylab("Predicted Democratic Advantage") + 
-        ggtitle("hhhh",
-                subtitle = "hhhh")
-    }
-    
-    if (input$choice == "Landline versus Cell Phone") {
-      data <- education %>%
-        ggplot(aes(x = landline, y = dem_margin, color = dem_margin)) +
-        geom_point() +
-        geom_label_repel(aes(label = state_district), size = 3, force = 1) +
-        scale_color_gradient(low= "red", high= "blue", name = "Predicted Dem. Adv.") +
-        xlab("Percentage of Poll Respondants Who Answered a Landline") +
-        ylab("Predicted Democratic Advantage") + 
-        ggtitle("hhhh",
-                subtitle = "hhhh")
-    }
-    
-  })
    
    output$distPlot <- renderPlot({
      
-     data <- made_a_choice()
+     if (input$choice == "Race") {
+       race %>%
+         ggplot(aes(x = non_white, y = dem_margin, color = dem_margin)) +
+         geom_point() +
+         geom_label_repel(aes(label = state_district), size = 3, force = 1) +
+         scale_color_gradient(low= "red", high= "blue", name = "Predicted Dem. Adv.") +
+         xlab("Percentage of Non-White Voters") +
+         ylab("Predicted Democratic Advantage") + 
+         ggtitle("hhhh",
+                 subtitle = "hhhh")
+     }
+     
+     if (input$choice == "Education Level") {
+       education %>%
+         ggplot(aes(x = higher_ed, y = dem_margin, color = dem_margin)) +
+         geom_point() +
+         geom_label_repel(aes(label = state_district), size = 3, force = 1) +
+         scale_color_gradient(low= "red", high= "blue", name = "Predicted Dem. Adv.") +
+         xlab("Percentage of Poll Respondants with Greater than a Bachelor's Degree") +
+         ylab("Predicted Democratic Advantage") + 
+         ggtitle("hhhh",
+                 subtitle = "hhhh")
+     }
+     
+     if (input$choice == "Landline versus Cell Phone") {
+       landline %>%
+         ggplot(aes(x = landline, y = dem_margin, color = dem_margin)) +
+         geom_point() +
+         geom_label_repel(aes(label = state_district), size = 3, force = 1) +
+         scale_color_gradient(low= "red", high= "blue", name = "Predicted Dem. Adv.") +
+         xlab("Percentage of Poll Respondants Who Answered a Landline") +
+         ylab("Predicted Democratic Advantage") + 
+         ggtitle("hhhh",
+                 subtitle = "hhhh")
+     }
+     
+     if (input$choice == "Thoughts on if Dems Will Take the House") {
+       demtakehouse %>%
+         ggplot(aes(x = genballot, y = dem_margin, color = dem_margin)) +
+         geom_point() +
+         geom_label_repel(aes(label = state_district), size = 3, force = 1) +
+         scale_color_gradient(low= "red", high= "blue", name = "Predicted Dem. Adv.") +
+         xlab("Percentage of Poll Respondants Thought Democrats Would Retake the House") +
+         ylab("Predicted Democratic Advantage") + 
+         ggtitle("hhhh",
+                 subtitle = "hhhh")
+     }
+     
+     if (input$choice == "Margin of Women") {
+       demtakehouse %>%
+         ggplot(aes(x = genballot, y = dem_margin, color = dem_margin)) +
+         geom_point() +
+         geom_label_repel(aes(label = state_district), size = 3, force = 1) +
+         scale_color_gradient(low= "red", high= "blue", name = "Predicted Dem. Adv.") +
+         xlab("Margin of Women Polled") +
+         ylab("Predicted Democratic Advantage") + 
+         ggtitle("hhhh",
+                 subtitle = "hhhh")
+     }
      
     
    }) 
