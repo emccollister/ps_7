@@ -29,6 +29,9 @@ education <- upshot %>%
   group_by(state_district) %>%
   count(educ) %>%
   spread(educ, n) %>%
-  mutate(higher_ed = "Graduate or Professional Degree" / ("Bachelors' degree" + "Grade school" + "Graduate or Professional Degree" + "High school" + "Some college or trade school") * 100) %>%
+  replace(is.na(.), 0) %>%
+  mutate(higher_ed = `Graduate or Professional Degree` / (`Bachelors' degree` + `Grade school` + `Graduate or Professional Degree` + `High school` + `Some college or trade school`) * 100) %>%
   left_join(JS, by = "state_district") %>%
-  select(state_district, dem_margin, non_white)
+  select(state_district, dem_margin, higher_ed)
+
+write_rds(education, "education.rds")
