@@ -38,7 +38,7 @@ server <- function(input, output) {
    output$distPlot <- renderPlot({
      
      if (input$choice == "Race") {
-       p <- race %>%
+       race %>%
          ggplot(aes(x = non_white, y = dem_margin, color = dem_margin)) +
          geom_point() +
          scale_color_gradient(low= "red", high= "blue", name = "Predicted Dem. Adv.") +
@@ -46,9 +46,6 @@ server <- function(input, output) {
          ylab("Predicted Democratic Advantage") + 
          ggtitle("Percentage of Non-White Votes vs. Predicted Democratic Advantage by House District",
                  subtitle = "hhhh")
-       
-       ggplotly(p, tooltip = c("state_district"))
-       p
      }
      
      else if (input$choice == "Education Level") {
