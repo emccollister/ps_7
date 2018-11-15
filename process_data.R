@@ -6,8 +6,9 @@ JS <- read.csv("mt_2_results.csv")
 
 JS <- JS %>%
   mutate(state_district = paste(tolower(state), district, sep = "")) %>%
-  mutate(dem_votes = as.numeric(str_remove(dem_votes, ",")), rep_votes = as.numeric(str_remove(rep_votes, ",")), other_votes = as.numeric(str_remove(other_votes, ",")))
-  mutate(dem_margin = (dem_votes - rep_votes) / (dem_votes + rep_votes + other_votes))
+  mutate(dem_votes = as.numeric(str_remove(dem_votes, ",")), rep_votes = as.numeric(str_remove(rep_votes, ",")), other_votes = as.numeric(str_remove(other_votes, ","))) %>%
+  replace(is.na(.), 0) %>%
+  mutate(dem_margin = (dem_votes - rep_votes) / (dem_votes + rep_votes + other_votes) * 100)
 
 upshot <- read_rds("upshot.rds")
 
@@ -15,8 +16,16 @@ race <- upshot %>%
   filter(senate == FALSE, gov == FALSE, wave == 3) %>%
   group_by(state_district) %>%
   count(file_race) %>%
-  mutate(n = n / sum(n) * 100) %>%
-  spread(file_race, n)
+  spread(file_race, n) %>%
+  mutate(non_white = (Asian + Black + Hispanic + Other + Unknown) / (Asian + Black + Hispanic + Other + Unknown + White) * 100) %>%
+  left_join(JS, by = "state_district") %>%
+  select(state_district, dem_margin, non_white)
 
-final <- race %>%
-  left_join(JS, by = "state_district")
+race <- upshot %>%
+  filter(senate == FALSE, gov == FALSE, wave == 3) %>%
+  group_by(state_district) %>%
+  count(file_race) %>%
+  spread(file_race, n) %>%
+  mutate(non_white = (Asian + Black + Hispanic + Other + Unknown) / (Asian + Black + Hispanic + Other + Unknown + White) * 100) %>%
+  left_join(JS, by = "state_district") %>%
+  select(state_district, dem_margin, non_white)
