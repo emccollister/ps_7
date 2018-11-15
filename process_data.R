@@ -42,8 +42,8 @@ genballot <- upshot %>%
   count(genballot) %>%
   spread(genballot, n) %>%
   replace(is.na(.), 0) %>%
-  mutate(higher_ed = `Graduate or Professional Degree` / (`Bachelors' degree` + `Grade school` + `Graduate or Professional Degree` + `High school` + `Some college or trade school`) * 100) %>%
+  mutate(genballot = `Dems. take House` / (`Dems. take House` + `Don't know` + `Reps. keep House`) * 100) %>%
   left_join(JS, by = "state_district") %>%
-  select(state_district, dem_margin, higher_ed)
+  select(state_district, dem_margin, genballot)
 
-write_rds(education, "education.rds")
+write_rds(genballot, "ps_7_shiny/genballot.rds")
