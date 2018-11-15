@@ -59,3 +59,15 @@ women <- upshot %>%
   select(state_district, dem_margin, women)
 
 write_rds(genballot, "ps_7_shiny/women.rds")
+
+landline <- upshot %>%
+  filter(senate == FALSE, gov == FALSE, wave == 3) %>%
+  group_by(state_district) %>%
+  count(phone_type) %>%
+  spread(phone_type, n) %>%
+  replace(is.na(.), 0) %>%
+  mutate(landline = (`Landline`) / (`Landline` + `Cell`) * 100) %>%
+  left_join(JS, by = "state_district") %>%
+  select(state_district, dem_margin, landline)
+
+write_rds(landline, "ps_7_shiny/landline.rds")
