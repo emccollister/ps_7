@@ -17,15 +17,18 @@ race <- upshot %>%
   group_by(state_district) %>%
   count(file_race) %>%
   spread(file_race, n) %>%
+  replace(is.na(.), 0) %>%
   mutate(non_white = (Asian + Black + Hispanic + Other + Unknown) / (Asian + Black + Hispanic + Other + Unknown + White) * 100) %>%
   left_join(JS, by = "state_district") %>%
   select(state_district, dem_margin, non_white)
 
-race <- upshot %>%
+write_rds(race, "race.rds")
+
+education <- upshot %>%
   filter(senate == FALSE, gov == FALSE, wave == 3) %>%
   group_by(state_district) %>%
-  count(file_race) %>%
-  spread(file_race, n) %>%
-  mutate(non_white = (Asian + Black + Hispanic + Other + Unknown) / (Asian + Black + Hispanic + Other + Unknown + White) * 100) %>%
+  count(educ) %>%
+  spread(educ, n) %>%
+  mutate(higher_ed = "Graduate or Professional Degree" / ("Bachelors' degree" + "Grade school" + "Graduate or Professional Degree" + "High school" + "Some college or trade school") * 100) %>%
   left_join(JS, by = "state_district") %>%
   select(state_district, dem_margin, non_white)
