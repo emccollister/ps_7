@@ -5,8 +5,8 @@ account: claire-fridkin
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 572502
-bundleId: 1701861
+bundleId: 1703079
 url: https://claire-fridkin.shinyapps.io/ps_7_shiny/
-when: 1542255199.24892
+when: 1542313064.05929
 asMultiple: FALSE
 asStatic: FALSE
