@@ -31,7 +31,7 @@ race <- upshot %>%
   left_join(JS, by = "state_district") %>%
   select(state_district, dem_margin, non_white)
 
-write_rds(race, "ps_7_shiny/race.rds")
+write_rds(race, "new_shiny/race.rds")
 
 education <- upshot %>%
   filter(senate == FALSE, gov == FALSE, wave == 3) %>%
@@ -43,7 +43,7 @@ education <- upshot %>%
   left_join(JS, by = "state_district") %>%
   select(state_district, dem_margin, higher_ed)
 
-write_rds(education, "ps_7_shiny/education.rds")
+write_rds(education, "new_shiny/education.rds")
 
 genballot <- upshot %>%
   filter(senate == FALSE, gov == FALSE, wave == 3) %>%
@@ -55,7 +55,7 @@ genballot <- upshot %>%
   left_join(JS, by = "state_district") %>%
   select(state_district, dem_margin, genballot)
 
-write_rds(genballot, "ps_7_shiny/genballot.rds")
+write_rds(genballot, "new_shiny/genballot.rds")
 
 women <- upshot %>%
   filter(senate == FALSE, gov == FALSE, wave == 3) %>%
@@ -67,7 +67,7 @@ women <- upshot %>%
   left_join(JS, by = "state_district") %>%
   select(state_district, dem_margin, women)
 
-write_rds(genballot, "ps_7_shiny/women.rds")
+write_rds(genballot, "new_shiny/women.rds")
 
 landline <- upshot %>%
   filter(senate == FALSE, gov == FALSE, wave == 3) %>%
@@ -79,4 +79,4 @@ landline <- upshot %>%
   left_join(JS, by = "state_district") %>%
   select(state_district, dem_margin, landline)
 
-write_rds(landline, "ps_7_shiny/landline.rds")
+write_rds(landline, "new_shiny/landline.rds")
