@@ -249,7 +249,7 @@ server <- function(input, output) {
      
      else if (input$choice == "Margin of Women" & input$on_off == FALSE) {
        womenplot <- women %>%
-         ggplot(aes(x = genballot, y = dem_margin, color = dem_margin)) +
+         ggplot(aes(x = women, y = dem_margin, color = dem_margin)) +
          geom_point() +
          scale_color_gradient(low= "red", high= "blue", name = "Predicted Dem. Adv.") +
          xlab("Margin of Women Polled") +
@@ -269,14 +269,14 @@ server <- function(input, output) {
      
      else if (input$choice == "Margin of Women" & input$on_off == TRUE) {
        womenplot <- women %>%
-         ggplot(aes(x = genballot, y = dem_margin, color = dem_margin)) +
+         ggplot(aes(x = women, y = dem_margin, color = dem_margin)) +
          geom_point() +
          geom_label_repel(aes(label = nicename), size = 3, force = 1) +
          scale_color_gradient(low= "red", high= "blue", name = "Predicted Dem. Adv.") +
          xlab("Margin of Women Polled") +
          ylab("Predicted Democratic Advantage") + 
          ggtitle("Margin of Women Polled vs. Democratic Advantage",
-                 subtitle = "There was a positive correlation between the percentage of female poll respondents per district and the \n Predicted Democratic Advantage.") +
+                 subtitle = "There was no correlation between the percentage of female poll respondents per district and the \n Predicted Democratic Advantage.") +
          theme(plot.title = element_text(lineheight=.8, face="bold"))
        print(womenplot)
        

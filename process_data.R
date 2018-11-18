@@ -78,7 +78,7 @@ women <- upshot %>% # Creates number of women per district
   left_join(JS, by = "state_district") %>%
   select(state_district, dem_margin, women)
 
-write_rds(genballot, "ps_7_shiny/women.rds")
+write_rds(women, "ps_7_shiny/women.rds")
 
 landline <- upshot %>% # Creates percentage of landline users per district
   filter(senate == FALSE, gov == FALSE, wave == 3) %>%
@@ -91,3 +91,4 @@ landline <- upshot %>% # Creates percentage of landline users per district
   select(state_district, dem_margin, landline)
 
 write_rds(landline, "ps_7_shiny/landline.rds")
+
